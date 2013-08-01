@@ -3,6 +3,8 @@
 set -e
 set -x
 
+template_name=$1
+
 function download {
   url=$1
   file=$(basename $url)
@@ -19,8 +21,9 @@ download http://buildroot.uclibc.org/downloads/buildroot-2013.05.tar.bz2
 
 cd buildroot-2013.05
 
-cp /vagrant/configs/defconfig ./
-cp /vagrant/configs/linux_defconfig output/build/linux-3.9.11/arch/x86/configs/linux_defconfig
+cp /vagrant/templates/$template_name/configs/defconfig ./
+cp /vagrant/templates/$template_name/configs/linux_defconfig \
+  output/build/linux-3.9.11/arch/x86/configs/linux_defconfig
 
 make defconfig
 make

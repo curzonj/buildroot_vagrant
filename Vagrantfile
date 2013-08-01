@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   config.vm.synced_folder "./", "/vagrant"
-  config.vm.provision :shell, :path => "build.sh"
+  config.vm.provision :shell, :path => "build.sh", :args => (ENV['template'] || 'vagrant')
 
   config.vm.provider "virtualbox" do |v|
     # Make us faster

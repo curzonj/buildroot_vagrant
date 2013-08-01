@@ -31,9 +31,30 @@ basic level. The kernel, the rootfs, and the init script. It's hard to create
 a linux system smaller than this. In the default config (at time of writing)
 the rootfs is just under 700kB. The kernel is under 5MB.
 
+## Templates
+
+buildroot has 3 things to customize the resulting filesystem images it. In
+order to preserve the tooling and scripts consistent between configurations,
+we put different configurations in different "template" directories instead
+of different git branches.
+
+The [buildroots docs](http://buildroot.uclibc.org/downloads/manual/manual.html#rootfs-custom)
+have all the details.
+
+#### configs
+
 By changing buildroot configs in the `configs` directory you can commit the
-build configuration to version control. The overlays directory is layed on
-top of the target file system bofore the initial ramdisk is compiled.
+build configuration to version control.
+
+#### overlay
+
+The overlay directory is layed on top of the target file system bofore the
+initial ramdisk is compiled.
+
+#### scripts
+
+there are pre and post scripts for when the rootfs.cpio.gz file is built. See
+the buildroot docs for more on how those work.
 
 ## TODO
 
