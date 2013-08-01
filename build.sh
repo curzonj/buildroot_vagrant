@@ -37,19 +37,18 @@ cat /usr/lib/syslinux/mbr.bin > /dev/sdb
 mkfs.ext4 /dev/sdb1
 mount -t ext4 /dev/sdb1 /mnt
 
-tar -xf output/images/rootfs.tar -C /mnt
+# TODO can 
+cp output/images/bzImage /mnt
+cp output/images/rootfs.cpio.gz /mnt
 
-mkdir -p /mnt/boot
-cp output/images/bzImage /mnt/boot
-
-cat > /mnt/boot/syslinux.cfg <<"EOS"
+cat > /mnt/syslinux.cfg <<"EOS"
 PROMPT 0
 TIMEOUT 1
 DEFAULT core
 
 LABEL core
-  LINUX bzImage
-  APPEND root=/dev/sda1 ro
+  linux bzImage
+  append root=/dev/ram0 initrd=rootfs.cpio.gz
 EOS
 
-extlinux --install /mnt/boot
+extlinux --install /mnt
