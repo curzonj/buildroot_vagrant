@@ -12,7 +12,7 @@ function download {
   [ -d $dir ] || tar xf $file
 }
 
-sudo apt-get -y install build-essential bc libncurses5-dev unzip syslinux
+sudo apt-get -y install build-essential bc libncurses5-dev unzip extlinux
 
 # http://buildroot.uclibc.org/downloads/manual/manual.html#_using_buildroot
 download http://buildroot.uclibc.org/downloads/buildroot-2013.05.tar.bz2
@@ -28,31 +28,28 @@ make
 umount /dev/sdb1 || true
 
 sudo sfdisk /dev/sdb <<"EOS"
-,1,L,*
-;
+,,L,*
 EOS
 
 # Install the master boot record
 cat /usr/lib/syslinux/mbr.bin > /dev/sdb
 
-# TODO expand the rootfs onto here
-mkfs.ext4 /dev/sdb2
+mkfs.ext4 /dev/sdb1
+mount -t ext4 /dev/sdb1 /mnt
 
-mkfs.vfat /dev/sdb1
-mount -t vfat /dev/sdb1 /mnt
+tar -xf output/images/rootfs.tar -C /mnt
 
-cp output/images/bzImage /mnt
-cp output/images/rootfs.cpio.gz /mnt
+mkdir -p /mnt/boot
+cp output/images/bzImage /mnt/boot
 
-cat > /mnt/syslinux.cfg <<"EOS"
+cat > /mnt/boot/syslinux.cfg <<"EOS"
 PROMPT 0
 TIMEOUT 1
 DEFAULT core
 
 LABEL core
-  LINUX bzImage
-  INITRD rootfs.cpio.gz
+  LINUX boot/bzImage
+  APPEND root=/dev/sda1 ro
 EOS
 
-# TODO switch to extlinux
-syslinux -i /dev/sdb1
+extlinux --install /mnt/boot
