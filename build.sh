@@ -12,11 +12,7 @@ function download {
   [ -d $dir ] || tar xf $file
 }
 
-sudo apt-get -y install build-essential bc libncurses5-dev unzip
-
-#download https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.9.11.tar.xz
-
-#[ -f linux-3.9.11/arch/x86/boot/bzImage ] || (cd linux-3.9.11 && make defconfig && make)
+sudo apt-get -y install build-essential bc libncurses5-dev unzip syslinux
 
 # http://buildroot.uclibc.org/downloads/manual/manual.html#_using_buildroot
 download http://buildroot.uclibc.org/downloads/buildroot-2013.05.tar.bz2
@@ -29,13 +25,34 @@ cp /vagrant/configs/linux_defconfig output/build/linux-3.9.11/arch/x86/configs/l
 make defconfig
 make
 
-exit 0
-
 umount /dev/sdb1 || true
 
-echo '1,,L,*' | sudo sfdisk /dev/sdb
+sudo sfdisk /dev/sdb <<"EOS"
+,1,L,*
+;
+EOS
 
-mkfs.ext4 /dev/sdb1
-mount -t ext4 /dev/sdb1 /mnt
+# Install the master boot record
+cat /usr/lib/syslinux/mbr.bin > /dev/sdb
 
-grub-install --root-directory=/mnt /dev/sdb
+# TODO expand the rootfs onto here
+mkfs.ext4 /dev/sdb2
+
+mkfs.vfat /dev/sdb1
+mount -t vfat /dev/sdb1 /mnt
+
+cp output/images/bzImage /mnt
+cp output/images/rootfs.cpio.gz /mnt
+
+cat > /mnt/syslinux.cfg <<"EOS"
+PROMPT 0
+TIMEOUT 1
+DEFAULT core
+
+LABEL core
+  LINUX bzImage
+  INITRD rootfs.cpio.gz
+EOS
+
+# TODO switch to extlinux
+syslinux -i /dev/sdb1
