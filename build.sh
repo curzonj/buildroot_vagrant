@@ -48,7 +48,7 @@ DEFAULT core
 
 LABEL core
   linux bzImage
-  append root=/dev/ram0 initrd=rootfs.cpio.gz
+  append initrd=rootfs.cpio.gz
 EOS
 
 extlinux --install /mnt
