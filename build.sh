@@ -48,7 +48,7 @@ TIMEOUT 1
 DEFAULT core
 
 LABEL core
-  LINUX boot/bzImage
+  LINUX bzImage
   APPEND root=/dev/sda1 ro
 EOS
 
