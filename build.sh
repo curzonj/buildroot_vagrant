@@ -3,25 +3,12 @@
 set -e
 set -x
 
-template_name=$1
+if [ ! -d buildroot ]
+then
+  sudo apt-get update
+  sudo apt-get -y install build-essential bc libncurses5-dev unzip extlinux vim git
 
-function download {
-  url=$1
-  file=$(basename $url)
-  dir=${file%%.tar*}
+  git clone git clone git://git.buildroot.net/buildroot
 
-  [ -f $file ] || wget --quiet $url
-  [ -d $dir ] || tar xf $file
-}
-
-sudo apt-get -y install build-essential bc libncurses5-dev unzip extlinux
-
-# http://buildroot.uclibc.org/downloads/manual/manual.html#_using_buildroot
-download http://buildroot.uclibc.org/downloads/buildroot-2013.05.tar.bz2
-
-cd buildroot-2013.05
-
-cp /vagrant/templates/$template_name/configs/defconfig ./
-
-make defconfig
-make
+  # TODO download the toolchain and build the FS
+fi

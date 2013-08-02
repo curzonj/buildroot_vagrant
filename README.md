@@ -58,7 +58,23 @@ the buildroot docs for more on how those work.
 
 ## TODO
 
-* generate a dynamic hostname
-* How do we make it easy to add init scripts and ssh keys
-* discover and mount any disks
-* make a template that builds a toolchain and the other templates use it
+* eth0 isn't getting setup automatically (add eth0 to auto)
+* shell doesn't have job control
+* resolv.conf symlink is broken
+* can't find the harddrive because /dev is messed up, use static dev
+table
+
+* disable the logger, usr/local can start it
+* move the vagrant useradd and sshkey to usr/local, have
+a common initrd file. No ssh keys in the initramfs
+* generate a dynamic hostname (in usr/local)
+* add my public key in the usr/local
+
+* can we move the stuff into /boot on the harddrive to make it pretty
+
+* mount the first disk we see at /usr/local and run /usr/local/etc/init.d/rcS
+that can add SSH keys, launch stuff, point syslog at a server, enable swap, do
+an ec2 cloud-init. It's like busybox is the base OS and /usr/local shell scripts
+are the config management system that configures on first boot.
+* build an impage that plays nice like cloud-init (on usr/local)
+
