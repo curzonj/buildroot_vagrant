@@ -36,8 +36,6 @@ are the config management system that configures on first boot.
 
 ## TODO
 
-* remove my key from the template
-
 * move the kernel out of the buildroot system
 * add aufs to the kernel
 * setup swap
