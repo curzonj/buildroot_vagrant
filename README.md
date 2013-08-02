@@ -59,3 +59,6 @@ the buildroot docs for more on how those work.
 ## TODO
 
 * generate a dynamic hostname
+* How do we make it easy to add init scripts and ssh keys
+* discover and mount any disks
+* make a template that builds a toolchain and the other templates use it
