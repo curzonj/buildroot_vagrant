@@ -1,0 +1,17 @@
+#!/bin/sh
+
+
+mkdir -p /root/.ssh
+cat /usr/local/etc/root.authorized_keys.d/* > /root/.ssh/authorized_keys
+chmod -R go-rwx /root
+
+grep vagrant /etc/passwd > /dev/null || echo 'vagrant:x:1001:1001:Linux User,,,:/home/vagrant:/bin/sh' >> /etc/passwd
+grep vagrant /etc/group > /dev/null || echo 'vagrant:x:1001:' >> /etc/group
+
+mkdir -p /home/vagrant/.ssh
+cat /usr/local/etc/vagrant.authorized_keys.d/* > /home/vagrant/.ssh/authorized_keys
+chown -R vagrant:vagrant /home/vagrant
+chmod -R go-rwx /home/vagrant
+
+echo "root:vagrant" | chpasswd
+echo "vagrant:vagrant" | chpasswd

@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
 
   config.vm.synced_folder "./", "/vagrant"
-  config.vm.provision :shell, :inline => "sudo -u vagrant /vagrant/build.sh"
+  config.vm.provision :shell, :path => "build.sh", :args => (ENV['scripts'] || 'vagrant')
 
   config.vm.provider "virtualbox" do |v|
     # Make us faster

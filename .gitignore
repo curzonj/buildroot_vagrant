@@ -1,3 +1,4 @@
 *.vdi
 .vagrant
 *.tar.*
+.DS_Store
