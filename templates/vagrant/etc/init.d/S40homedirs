@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# This way the home directories are on the harddisk
+mkdir -p /usr/local/home
+
+if [ -d /home ]; then
+  rmdir /home
+  ln -s usr/local/home /home
+fi

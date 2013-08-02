@@ -36,6 +36,7 @@ are the config management system that configures on first boot.
 
 ## TODO
 
+* busybox might be missing readline
 * move the kernel out of the buildroot system
 * add aufs to the kernel
 * setup swap
