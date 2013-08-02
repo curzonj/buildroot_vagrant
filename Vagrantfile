@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
 
   config.vm.synced_folder "./", "/vagrant"
-  config.vm.provision :shell, :path => "build.sh", :args => (ENV['scripts'] || 'vagrant')
+  config.vm.provision :shell, :path => "build.sh", :args => "#{ENV['scripts'] || 'vagrant'} #{ENV['disk'] || '/dev/sda1'}"
 
   config.vm.provider "virtualbox" do |v|
     # Make us faster
@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     v.customize ['storagectl', :id, '--name', 'SATA Controller', '--controller', 'IntelAHCI']
     v.customize ['modifyvm', :id, "--chipset", "ich9"]
 
-    v.customize ["createhd", '--filename', 'busybox_os.vdi', '--size', 50]
+    v.customize ["createhd", '--filename', 'busybox_os.vdi', '--size', (ENV['size'] || 10240)]
     v.customize ["storageattach", :id, "--storagectl", "SATA Controller", '--port', 1, '--device', 0, '--type', 'hdd', '--medium', 'busybox_os.vdi' ]
   end
 end

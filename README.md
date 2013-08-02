@@ -16,6 +16,11 @@ image in busybox_os.vdi. The harddisk will be bootable. All you have to do
 is stop the vagrant image, `vagrant halt`, create a custom virtualbox VM
 and specify the busybox_os.vdi file as the first SATA disk of the new VM.
 
+    vagrant package --base NAME_OF_CUSTOM_VM
+
+Then you'll have a package.box file in the directory. For more information
+about vagrant package see [the slightly outdated docs](http://docs-v1.vagrantup.com/v1/docs/base_boxes.html).
+
 ## Buildroot
 
 buildroot is for building tiny embedded linux filesystems. Those embedded size
@@ -30,6 +35,8 @@ It's like busybox is the base OS and /usr/local shell scripts
 are the config management system that configures on first boot.
 
 ## TODO
+
+* remove my key from the template
 
 * move the kernel out of the buildroot system
 * add aufs to the kernel

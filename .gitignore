@@ -2,3 +2,4 @@
 .vagrant
 *.tar.*
 .DS_Store
+*.box

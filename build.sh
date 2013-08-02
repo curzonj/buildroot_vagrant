@@ -4,6 +4,7 @@ set -e
 set -x
 
 template_name=$1
+future_disk=$2
 
 function download {
   url=$1
@@ -56,9 +57,7 @@ fi
 
 umount /dev/sdb1 || true
 
-sfdisk /dev/sdb <<"EOS"
-,,L,*
-EOS
+(echo ',,L,*' | sfdisk /dev/sdb) || partprobe
 
 # Install the master boot record
 cat /usr/lib/syslinux/mbr.bin > /dev/sdb
@@ -76,14 +75,14 @@ cp -a /vagrant/templates/$template_name/* /mnt/
 
 # TODO this is the part that changes based on openstack
 # vs vagrant, where do we find our rootfs
-cat > /mnt/boot/syslinux.cfg <<"EOS"
+cat > /mnt/boot/syslinux.cfg <<EOS
 PROMPT 0
 TIMEOUT 1
 DEFAULT core
 
 LABEL core
   linux bzImage
-  append initrd=rootfs.cpio.gz usrlocal=/dev/sda1
+  append initrd=rootfs.cpio.gz usrlocal=$future_disk
 EOS
 
 extlinux --install /mnt/boot
