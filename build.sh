@@ -25,31 +25,3 @@ cp /vagrant/templates/$template_name/configs/defconfig ./
 
 make defconfig
 make
-
-umount /dev/sdb1 || true
-
-sudo sfdisk /dev/sdb <<"EOS"
-,,L,*
-EOS
-
-# Install the master boot record
-cat /usr/lib/syslinux/mbr.bin > /dev/sdb
-
-mkfs.ext4 /dev/sdb1
-mount -t ext4 /dev/sdb1 /mnt
-
-# TODO can 
-cp output/images/bzImage /mnt
-cp output/images/rootfs.cpio.gz /mnt
-
-cat > /mnt/syslinux.cfg <<"EOS"
-PROMPT 0
-TIMEOUT 1
-DEFAULT core
-
-LABEL core
-  linux bzImage
-  append initrd=rootfs.cpio.gz
-EOS
-
-extlinux --install /mnt
