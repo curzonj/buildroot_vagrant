@@ -36,7 +36,10 @@ are the config management system that configures on first boot.
 
 ## TODO
 
-* busybox might be missing readline
+* Get the ARCH to be x86_64
+* /tmp needs to be bind mounted to /usr/local/tmp so that we don't fill up the ramdisk
+* make rcK run the /usr/local/init.d/rcK if there is one before it's own stuff
+* terminate all processes on shutdown (in busybox inittab), ubuntu sendsigs
 * move the kernel out of the buildroot system
 * add aufs to the kernel
 * setup swap
