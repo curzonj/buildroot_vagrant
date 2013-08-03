@@ -5,6 +5,10 @@ It's currently designed to load the rootfs on an initial ramfs. The build script
 have no concept of pivoting to a disk-based root filesystem although they can
 mount disk filesystems into the VFS tree.
 
+The purpose of this is to make it easy to experiment with OS "containers" in the
+format of self-executing tarballs. Instead of Upstart or systemd being PID 1, they
+are PID 2.
+
 ## Quickstart
 
 Make sure you have vagrant installed: http://www.vagrantup.com/
