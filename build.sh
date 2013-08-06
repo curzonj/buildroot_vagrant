@@ -27,7 +27,7 @@ then
   apt-get -y install build-essential bc libncurses5-dev unzip extlinux vim git
 fi
 
-[ -d buildroot ] || git clone git clone git://git.buildroot.net/buildroot
+[ -d buildroot ] || git clone https://github.com/curzonj/buildroot.git
 
 if [ ! -d /usr/local/uclibc-toolchain-3.9 ]; then
   if [ -f /vagrant/toolchain_usr_local_uclibc-toolchain-3.9.tar.gz ]; then
